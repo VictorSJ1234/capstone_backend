@@ -3,6 +3,8 @@ const AdminResponseToBarangayController = require("../controllers/admin_response
 
 router.post('/createAdminResponseToBarangay', AdminResponseToBarangayController.createAdminReport);
 router.post('/getAdminResponseToBarangay', AdminResponseToBarangayController.getAdminResponse);
+router.delete('/deleteAdminResponseToBarangay/:reportId', AdminResponseToBarangayController.deleteAdminResponse);
+
 
 
 

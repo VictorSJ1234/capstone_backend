@@ -94,6 +94,26 @@ class UserReportServices{
         }
     }
 
+    // Function to count user reports by status
+    static async countReportByStatus(reportStatus) {
+        try {
+            const count = await UserReportModel.countDocuments({ report_status: reportStatus }).exec();
+            return count;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async countReportByStatusAndBarangay(barangay, reportStatus) {
+        try {
+            const count = await UserReportModel.countDocuments({ barangay, report_status: reportStatus }).exec();
+            return count;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
 
 }
 

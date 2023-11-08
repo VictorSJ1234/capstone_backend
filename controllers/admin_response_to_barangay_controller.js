@@ -84,3 +84,19 @@ exports.getAdminResponse = async (req, res, next) => {
         next(error);
     }
 };
+
+// Function to delete an admin response by reportId
+exports.deleteAdminResponse = async (req, res, next) => {
+    try {
+        const { reportId } = req.params;
+
+        // Call the service function to delete the admin response
+        await AdminResponseToBarangayService.deleteAdminResponse(reportId);
+
+        res.json({ status: true, message: 'Admin Response Deleted Successfully' });
+    } catch (error) {
+        console.log(error, 'err---->');
+        next(error);
+    }
+};
+

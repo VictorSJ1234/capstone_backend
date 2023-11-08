@@ -10,6 +10,10 @@ router.get('/totalReports',  UserReportController.getTotalReportsCount);
 router.post('/reports/countByBarangay', UserReportController.countReportByBarangay);
 router.post('/reports/countReportByMonth', UserReportController.countReportByMonth);
 router.post('/getUserReportById', UserReportController.getUserReportById);
+router.post('/reports/countByStatus', UserReportController.countReportByStatus);
+router.post('/reports/countByStatusAndBarangay', UserReportController.countReportByStatusAndBarangay);
+
+
 
 module.exports = router;
 

@@ -272,6 +272,31 @@ exports.getUserReportById = async (req, res, next) => {
     }
 };
 
+exports.countReportByStatus = async (req, res, next) => {
+    try {
+        const { reportStatus } = req.body;
+        const count = await UserReportServices.countReportByStatus(encryptData(reportStatus));
+
+        res.json({ status: true, count });
+    } catch (error) {
+        console.log(error, 'err---->');
+        next(error);
+    }
+};
+
+exports.countReportByStatusAndBarangay = async (req, res, next) => {
+    try {
+        const { barangay, reportStatus } = req.body;
+        const count = await UserReportServices.countReportByStatusAndBarangay(encryptData(barangay), encryptData(reportStatus));
+
+        res.json({ status: true, count });
+    } catch (error) {
+        console.log(error, 'err---->');
+        next(error);
+    }
+};
+
+
 
 
 

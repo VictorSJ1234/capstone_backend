@@ -43,6 +43,17 @@ class AdminResponseToBarangayService {
         }
     }
 
+    // Function to delete an admin response by reportId
+    static async deleteAdminResponse(reportId) {
+        try {
+            // Use Mongoose to delete the admin response by reportId
+            return await AdminResponseToBarangayModel.deleteOne({ reportId });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
 
 
 }

@@ -83,3 +83,23 @@ exports.getBarangayResponse = async (req, res, next) => {
         next(error);
     }
 };
+
+// Delete admin response by reportId
+exports.deleteBarangayResponse = async (req, res, next) => {
+    try {
+        const { reportId } = req.params;
+
+        // Call the service method to delete admin response by reportId
+        const result = await BarangayResponseServices.deleteBarangayResponse(reportId);
+
+        if (result.deletedCount === 0) {
+            res.json({ status: false, message: 'No records found to delete for the given reportId.' });
+        } else {
+            res.json({ status: true, message: 'Admin response deleted successfully.' });
+        }
+    } catch (error) {
+        console.log(error, 'err---->');
+        next(error);
+    }
+};
+

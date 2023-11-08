@@ -43,6 +43,15 @@ class BaranagayResponseService {
         }
     }
 
+    // Function to delete admin response by reportId
+    static async deleteBarangayResponse(reportId) {
+        try {
+            // Delete admin responses based on the reportId
+            return await BarangayResponseModel.deleteMany({ reportId });
+        } catch (error) {
+            throw error;
+        }
+    }
 
 
 }

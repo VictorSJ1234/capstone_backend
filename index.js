@@ -11,6 +11,6 @@ app.get('/',(req,res)=>{
 })
 
 
-app.listen(port,()=>{
+app.listen(process.env.PORT || port,()=>{
     console.log(`Server Listening on Port http://localhost:${port}`);
 })

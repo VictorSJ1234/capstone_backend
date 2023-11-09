@@ -381,10 +381,10 @@ exports.changePassword = async (req, res, next) => {
         }
 
         // Validate the new password (you can reuse your existing validation logic)
-        if (!newPassword.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+        if (!newPassword.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{10,}$/)) {
             return res.status(400).json({
                 error: "INVALID_PASSWORD_FORMAT",
-                message: "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)."
+                message: "Password must be at least 10 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character (.@$!%*?&)."
             });
         }
 

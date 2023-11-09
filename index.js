@@ -6,7 +6,7 @@ const db = require('./config/db')
 
 const port = process.env.PORT || 80;
 
-app.get('/',(req,res)=>{
+app.get('/api',(req,res)=>{
     res.send("Hello World")
 })
 

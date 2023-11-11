@@ -15,7 +15,13 @@ const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+        origin: 'https://mosquinator-backend-20075696f4d1.herokuapp.com',
+        credential: true
+    }
+));
+
+app.options('*',cors());
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

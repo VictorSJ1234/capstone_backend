@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const UserReportController = require('../controllers/user_report_controller')
+const UserReportController = require('../controllers/user_report_controller');
 
 router.post("/createUserReport",UserReportController.createUserReport);
 router.post('/getUserReport', UserReportController.getUserReport);

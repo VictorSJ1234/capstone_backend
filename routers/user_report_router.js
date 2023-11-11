@@ -1,5 +1,7 @@
 const router = require("express").Router();
-const UserReportController = require('../controllers/user_report_controller')
+const UserReportController = require('../controllers/user_report_controller');
+const cors = require('cors'); 
+router.use(cors());
 
 router.post("/createUserReport",UserReportController.createUserReport);
 router.post('/getUserReport', UserReportController.getUserReport);

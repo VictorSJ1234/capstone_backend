@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const AdminRegistrationController = require("../controllers/admin_registration_controller");
-const cors = require('../cors'); 
-router.use(cors());
 
 router.post('/adminRegistration', AdminRegistrationController.register);
 router.post('/adminLogin', AdminRegistrationController.login);

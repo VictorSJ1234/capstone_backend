@@ -1,5 +1,4 @@
 const express = require("express");
-const helmet = require('helmet');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const UserRoute = require("./routers/user_information_router");
@@ -16,7 +15,6 @@ const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
-app.use(helmet());
 const corsOpts = {
     origin: '*',
   

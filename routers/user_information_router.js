@@ -1,7 +1,5 @@
 const router = require('express').Router();
-const UserController = require("../controllers/user_information_controller");
-const cors = require('../cors'); 
-router.use(cors());
+const UserController = require("../controllers/user_information_controller")
 
 router.post('/registration', UserController.register);
 router.post('/login', UserController.login);
@@ -14,7 +12,6 @@ router.put('/changeMobileUserPassword/:_id', UserController.changePassword);
 router.get('/TotalMobileUser', UserController.getTotalUserInformationCount);
 router.post('/users/countByBarangay', UserController.countUsersByBarangay);
 router.post('/resetPassword', UserController.resetPassword);
-
 
 
 module.exports = router;

@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const ReportToBarangayController = require('../controllers/report_to_barangay_controller');
-const cors = require('../cors'); 
-router.use(cors());
 
 router.post("/createReportToBarangay", ReportToBarangayController.createReportToBarangay);
 router.post("/getReportToBarangay", ReportToBarangayController.getReportToBarangay);

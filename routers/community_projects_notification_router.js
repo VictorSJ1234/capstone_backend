@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const CommunityProjectNotificationController = require('../controllers/community_project_notification_controller');
-const cors = require('cors'); 
-router.use(cors());
 
 router.post("/createNotificationStatus", CommunityProjectNotificationController.createCommunityProjectNotification);
 router.post("/getNotificationStatus", CommunityProjectNotificationController.getNotificationsByUserAndStatus); 

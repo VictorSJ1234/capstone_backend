@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const InquiryController = require('../controllers/inquiry_controller');
-const cors = require('../cors'); 
-router.use(cors());
 
 router.post("/createInquiry", InquiryController.createInquiry);
 router.post("/getInquiry", InquiryController.getInquiry);
@@ -10,8 +8,6 @@ router.put('/editInquiry/:_id', InquiryController.editProject);
 router.post('/deleteInquiry', InquiryController.deleteInquiry);
 router.post('/sendToMail', InquiryController.InquiryResponse);
 router.get('/TotalInquiry', InquiryController.getTotalUserInquiryCount);
-const cors = require('cors'); 
-router.use(cors());
 
 module.exports = router;
 

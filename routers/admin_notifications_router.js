@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const AdminNotificationController = require('../controllers/admin_notifications_controller');
-const cors = require('../cors'); 
-router.use(cors());
 
 router.post("/createAdminNotificationStatus", AdminNotificationController.createAdminNotification);
 router.post("/getAdminNotificationStatus", AdminNotificationController.getNotificationsByUserAndStatusAndRecipient); 

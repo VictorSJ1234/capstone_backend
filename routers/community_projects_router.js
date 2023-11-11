@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const CommunityProjectsController = require('../controllers/community_projects_controller');
-const cors = require('cors'); 
+const cors = require('../cors'); 
 router.use(cors());
 
 router.post("/createCommunityProject", CommunityProjectsController.createCommunityProject);

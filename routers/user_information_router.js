@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const UserController = require("../controllers/user_information_controller");
-const cors = require('cors'); 
+const cors = require('../cors'); 
 router.use(cors());
 
 router.post('/registration', UserController.register);

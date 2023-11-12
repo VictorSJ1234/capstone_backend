@@ -23,7 +23,7 @@ app.use(cors({
 app.options('*', cors());
 
 app.use((req, res, next) => {
-    res.setHeader('Permissions-Policy', 'geolocation=(self "https://mosquinator.online")');
+    res.setHeader('Permissions-Policy', 'geolocation=(self "https://mosquinator-backend-20075696f4d1.herokuapp.com")');
     next();
 });
 

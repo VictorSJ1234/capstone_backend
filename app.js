@@ -15,19 +15,9 @@ const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
-const corsOptions = {
-    origin: function (origin, callback) {
-      // Check if the origin is allowed
-      const allowedOrigins = ['https://www.mosquinator.online', 'http://www.mosquinator.online'];
-      const isAllowed = allowedOrigins.includes(origin);
-      callback(null, isAllowed);
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    optionsSuccessStatus: 204,
-  };
-  
-  app.use(cors(corsOptions));
-  
+app.use(cors({
+    exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
+  }));
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

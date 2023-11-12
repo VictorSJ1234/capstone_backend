@@ -16,7 +16,7 @@ const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
 app.use(cors({
-    origin: 'https://your-angular-app-domain.com',
+    origin: 'https://www.mosquinator.online',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,  // enable set cookie
 }));

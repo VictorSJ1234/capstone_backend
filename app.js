@@ -13,14 +13,9 @@ const BarangayResponseRoute = require("./routers/barangay_response_router");
 const AdminResponseToBarangayRoute = require("./routers/admin_response_to_barangay_router");
 const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
-const corsOptions = require("./corsOptions");
 
 const app = express();
-app.use(cors({
-    origin: 'https://mosquinator.online',
-    credentials: true,
-    optionsSuccessStatus: 200
-}));
+app.use(cors());
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

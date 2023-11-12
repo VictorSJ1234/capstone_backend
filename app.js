@@ -18,13 +18,9 @@ const app = express();
 app.use(cors()); 
 
 app.use((req, res, next) => {
-    // Allow requests from all origins
     res.header('Access-Control-Allow-Origin', '*');
-    // Allow the following HTTP methods
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    // Allow the following headers
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    // Continue with the next middleware in the stack
     next();
   });
   

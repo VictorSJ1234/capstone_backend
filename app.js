@@ -16,7 +16,7 @@ const AdminNotificationRoute = require("./routers/admin_notifications_router");
 const corsOptions = require("./corsOptions");
 
 const app = express();
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

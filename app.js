@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require('cors');
+
 const UserRoute = require("./routers/user_information_router");
 const UserReportRoute = require("./routers/user_report_router");
 const AdminRegistrationRoute = require("./routers/admin_registration_router");
@@ -15,14 +15,8 @@ const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
-const corsOptions = {
-    origin: '*', // or specify the exact origin of your Angular app
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
-    optionsSuccessStatus: 204, // some legacy browsers choke on 204
-  };
-  
-  app.use(cors(corsOptions));
+
+
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));

@@ -6,10 +6,10 @@ const db = require('./config/db');
 const cors = require('cors');
 
 const corsOptions = {
-    origin: 'https://www.mosquinator.online', // Replace with the actual URL of your Angular app
+    origin: 'https://www.mosquinator.online', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
-    optionsSuccessStatus: 204, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 204, 
 };
 
 app.use(cors(corsOptions));

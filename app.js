@@ -16,7 +16,11 @@ const AdminNotificationRoute = require("./routers/admin_notifications_router");
 const corsOptions = require("./corsOptions");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'https://mosquinator.online',
+    credentials: true,
+    optionsSuccessStatus: 200
+}));
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

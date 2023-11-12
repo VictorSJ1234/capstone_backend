@@ -3,13 +3,10 @@ const UserModel = require('./models/user_information_model');
 const UserReportModel = require('./models/user_report_model');
 const AdminRegistrationModel = require('./models/admin_registration_model');
 const db = require('./config/db');
-const express = require('express');
-const cors = require('cors');
-const app = express();
 
 const port = process.env.PORT || 3000;
 
-app.get('/', cors(), (req,res)=>{
+app.get('/',(req,res)=>{
     res.send("Hello World")
 })
 

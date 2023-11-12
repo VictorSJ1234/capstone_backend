@@ -4,12 +4,14 @@ const UserReportModel = require('./models/user_report_model');
 const AdminRegistrationModel = require('./models/admin_registration_model');
 const db = require('./config/db');
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://www.mosquinator.online');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    next();
-  });
+const corsOptions = {
+    origin: 'https://www.mosquinator.online', // Replace with the actual URL of your Angular app
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+    optionsSuccessStatus: 204, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
   
 const port = process.env.PORT || 3000;
 

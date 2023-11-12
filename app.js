@@ -16,9 +16,10 @@ const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
 const corsOptions = {
-    origin: '*', 
+    origin: '*', // or specify the exact origin of your Angular app
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+    optionsSuccessStatus: 204, // some legacy browsers choke on 204
   };
   
   app.use(cors(corsOptions));

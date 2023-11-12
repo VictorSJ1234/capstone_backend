@@ -22,6 +22,10 @@ app.use(cors({
 }));
 app.options('*', cors());
 
+app.use((req, res, next) => {
+    res.setHeader('Permissions-Policy', 'geolocation=(self "https://mosquinator.online")');
+    next();
+});
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

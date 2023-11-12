@@ -16,7 +16,7 @@ const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
 const corsOptions = {
-    origin: 'https://www.mosquinator.online', 
+    origin: 'https://mosquinator-backend-20075696f4d1.herokuapp.com', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
     optionsSuccessStatus: 204, 

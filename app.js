@@ -15,14 +15,12 @@ const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
-const corsOptions = {
-    origin: 'https://mosquinator-backend-20075696f4d1.herokuapp.com', 
+app.use(cors({
+    origin: 'https://your-angular-app-domain.com',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
-    optionsSuccessStatus: 204, 
-};
-
-app.use(cors(corsOptions));
+    credentials: true,  // enable set cookie
+}));
+app.options('*', cors());
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

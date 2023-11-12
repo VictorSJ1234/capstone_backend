@@ -15,9 +15,18 @@ const InquiryRoute = require("./routers/inquiry_routes");
 const AdminNotificationRoute = require("./routers/admin_notifications_router");
 
 const app = express();
-app.use(cors({
-    exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
-  }));
+const corsOptions = {
+    origin: function (origin, callback) {
+      // Check if the origin is allowed
+      const allowedOrigins = ['*'];
+      const isAllowed = allowedOrigins.includes(origin);
+      callback(null, isAllowed);
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    optionsSuccessStatus: 204,
+  };
+  
+  app.use(cors(corsOptions));
 
 // Set the body-parser middleware with the increased limit
 app.use(bodyParser.json({ limit: '50mb' }));

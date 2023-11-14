@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const stream = require('stream');
 
 const secretKey = 'NationalUniversityManila'; // secret key
 const iv = '1234567890123456'; // IV for AES-256-CBC

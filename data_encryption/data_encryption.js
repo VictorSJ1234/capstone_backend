@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const stream = require('stream');
 
 const secretKey = 'NationalUniversityManila'; // secret key
 const iv = '1234567890123456'; // IV for AES-256-CBC
@@ -16,32 +15,18 @@ function encryptData(data) {
 
 function decryptData(data) {
   const key = ensureKeyLength(secretKey);
-  const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
 
-  let decrypted = '';
-  let chunk;
-  try {
-    // Use streams for decryption
-    const buffer = Buffer.from(data, 'hex');
-    const input = new stream.PassThrough();
-    input.end(buffer);
-    input.pipe(decipher);
+  const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
 
-    // Collect decrypted chunks
-    decipher.on('data', (chunk) => {
-      decrypted += chunk.toString('utf8');
-    });
+  // Convert the input data (in hex format) to a buffer
+  const dataBuffer = Buffer.from(data, 'hex');
 
-    return new Promise((resolve, reject) => {
-      decipher.on('end', () => resolve(decrypted));
-      decipher.on('error', reject);
-    });
-  } catch (error) {
-    console.error('Decryption error:', error);
-    throw error;
-  }
+  // Decryption
+  let decrypted = decipher.update(dataBuffer, 'binary', 'utf8');
+  decrypted += decipher.final('utf8');
+
+  return decrypted;
 }
-
 
   
   

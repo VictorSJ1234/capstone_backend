@@ -5,69 +5,43 @@ const bcrypt = require("bcrypt");
 
 exports.register = async (req, res, next) => {
     try {
-        const { fullname, gender, birthday, contact_number, office, selected_role, email, uploaded_file, password, adminProfilePicture, official_role, postedDate, accountStatus} = req.body;
+        const { fullname, gender, birthday, contact_number, office, selected_role, email, uploaded_file, password, adminProfilePicture, official_role, postedDate, accountStatus } = req.body;
 
-            // Add console.log statements to check the values of variables
-            console.log("fullname:", fullname);
-            console.log("gender:", gender);
-            console.log("birthday:", birthday);
-            console.log("contact_number:", contact_number);
-            console.log("office:", office);
-            console.log("selected_role:", selected_role);
-            console.log("email:", email);
-            console.log("uploaded_file:", uploaded_file);
-            console.log("password:", password);
-            console.log("adminProfilePicture:", adminProfilePicture);
-            console.log("official_role:", official_role);
-            console.log("postedDate:", postedDate);
+        const defaultOfficialRole = "User";
+        const defaultAccountStatus = "not Validated";
 
+        const dateReported = postedDate ? new Date(postedDate) : new Date();
 
-            const defaultOfficialRole = "User"; 
-            const defaultAccountStatus = "not Validated";
-
-            // Encrypt the sensitive data
-            const encryptedFullname = encryptData(fullname);
-            const encryptedGender = encryptData(gender);
-            const encryptedBirthday = encryptData(birthday);
-            const encryptedContactNumber = encryptData(contact_number);
-            const encryptedOffice = encryptData(office);
-            const encryptedSelectedRole = encryptData(selected_role);
-            const encryptedEmail = encryptData(email);
-            const encryptedRole = encryptData(defaultOfficialRole);
-            const encryptedStatus = encryptData(defaultAccountStatus);
-
-            const dateReported = postedDate ? new Date(postedDate) : new Date();
-
-            try {
-                // Data that will be transferred to the database
-                const successRes = await adminRegistrationService.registerAdmin(
-                    encryptedFullname,
-                    encryptedGender,
-                    encryptedBirthday,
-                    encryptedContactNumber,
-                    encryptedOffice,
-                    encryptedSelectedRole,
-                    encryptedEmail,
-                    uploaded_file, // No need to encrypt files
-                    password, // Already hashed
-                    adminProfilePicture, // No need to encrypt profile picture
-                    encryptedRole,
-                    dateReported,
-                    encryptedStatus
-                );
-                res.json({ status: true, success: "User Registered Successfully" });
-            } catch (error) {
-                // Handle specific error for duplicate email or username
-                if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
-                    res.status(400).json({ error: "Email must be unique." });
-                }else {
-                    throw error;
-                }
-            }
+        try {
+            const successRes = await adminRegistrationService.registerAdmin(
+                fullname,
+                gender,
+                birthday,
+                contact_number,
+                office,
+                selected_role,
+                email,
+                uploaded_file,
+                password,
+                adminProfilePicture,
+                defaultOfficialRole,
+                dateReported,
+                defaultAccountStatus
+            );
+            res.json({ status: true, success: "User Registered Successfully" });
         } catch (error) {
-            next(error);
+            // Handle specific error for duplicate email or username
+            if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
+                res.status(400).json({ error: "Email must be unique." });
+            } else {
+                throw error;
+            }
+        }
+    } catch (error) {
+        next(error);
     }
 };
+
 
 exports.login = async (req, res, next) => {
     try {
@@ -77,7 +51,7 @@ exports.login = async (req, res, next) => {
         if (!email || !password) {
             throw new Error('Parameter are not correct');
         }
-        const user = await adminRegistrationService.checkUser(encryptData(email)); 
+        const user = await adminRegistrationService.checkUser(email); 
         if (!user) {
             //cannot find the requested data
             return res.status(404).json({ error: "USER_NOT_FOUND", message: 'User does not exist' });
@@ -91,7 +65,7 @@ exports.login = async (req, res, next) => {
         }
 
         // Decrypt the role
-    const decryptedRole = decryptData(user.official_role);
+    const decryptedRole = user.official_role;
 
         // Creating Token
 
@@ -122,49 +96,34 @@ exports.getAdminData = async (req, res, next) => {
         const userAdminData = await adminRegistrationService.getAdminData(_id);
 
         if (userAdminData.length === 0) {
-            // No reports found for the user, return an empty array
             res.json({ status: true, userAdminData: [] });
             return;
         }
 
-        // Decrypt data for each report
-        const decryptAdminInformation = userAdminData.map(adminData => {
-            const decryptedFullname = decryptData(adminData.fullname);
-            const decryptedGender = decryptData(adminData.gender);
-            const decryptedBirthday = decryptData(adminData.birthday);
-            const decryptedContactNumber = decryptData(adminData.contact_number);
-            const decryptedOffice = decryptData(adminData.office);
-            const decryptedSelectedRole = decryptData(adminData.selected_role);
-            const decryptedEmail = decryptData(adminData.email);
-            const decryptedOfficialRole = decryptData(adminData.official_role);
-            const decryptedPostedDate = adminData.postedDate;
-            const decryptedStatus = decryptData(adminData.accountStatus);
+        const adminDataWithoutDecryption = userAdminData.map(adminData => ({
+            _id: adminData._id,
+            fullname: adminData.fullname,
+            gender: adminData.gender,
+            birthday: adminData.birthday,
+            contact_number: adminData.contact_number,
+            office: adminData.office,
+            selected_role: adminData.selected_role,
+            email: adminData.email,
+            uploaded_file: adminData.uploaded_file,
+            adminProfilePicture: adminData.adminProfilePicture,
+            official_role: adminData.official_role,
+            postedDate: adminData.postedDate,
+            accountStatus: adminData.accountStatus,
+            password: adminData.password
+        }));
 
-            // Data that will be fetched and shown in the UI
-            return {
-                _id: adminData._id,
-                fullname: decryptedFullname,
-                gender: decryptedGender,
-                birthday: decryptedBirthday,
-                contact_number: decryptedContactNumber,
-                office: decryptedOffice,
-                selected_role: decryptedSelectedRole,
-                email: decryptedEmail,
-                uploaded_file: adminData.uploaded_file,
-                adminProfilePicture: adminData.adminProfilePicture,
-                official_role: decryptedOfficialRole,
-                postedDate: decryptedPostedDate,
-                accountStatus: decryptedStatus,
-                password: adminData.password
-            };
-        });
-
-        res.json({ status: true, userAdminData: decryptAdminInformation });
+        res.json({ status: true, userAdminData: adminDataWithoutDecryption });
     } catch (error) {
         console.log(error, 'err---->');
         next(error);
     }
 };
+
 
 
 //get all admn date
@@ -172,43 +131,29 @@ exports.getAllAdminData = async (req, res, next) => {
     try {
         const allAdminData = await adminRegistrationService.getAllAdminData();
 
-        // Decrypt data for each report
-        const decryptAdminInformation = allAdminData.map(adminData => {
-            const decryptedFullname = decryptData(adminData.fullname);
-            const decryptedGender = decryptData(adminData.gender);
-            const decryptedBirthday = decryptData(adminData.birthday);
-            const decryptedContactNumber = decryptData(adminData.contact_number);
-            const decryptedOffice = decryptData(adminData.office);
-            const decryptedSelectedRole = decryptData(adminData.selected_role);
-            const decryptedEmail = decryptData(adminData.email);
-            const decryptedOfficialRole = decryptData(adminData.official_role);
-            const decryptedPostedDate = adminData.postedDate;
-            const decryptedStatus = decryptData(adminData.accountStatus);
+        const adminDataWithoutDecryption = allAdminData.map(adminData => ({
+            _id: adminData._id,
+            fullname: adminData.fullname,
+            gender: adminData.gender,
+            birthday: adminData.birthday,
+            contact_number: adminData.contact_number,
+            office: adminData.office,
+            selected_role: adminData.selected_role,
+            email: adminData.email,
+            uploaded_file: adminData.uploaded_file,
+            adminProfilePicture: adminData.adminProfilePicture,
+            official_role: adminData.official_role,
+            postedDate: adminData.postedDate,
+            accountStatus: adminData.accountStatus,
+        }));
 
-            // Data that will be fetched and shown in the UI
-            return {
-                _id: adminData._id,
-                fullname: decryptedFullname,
-                gender: decryptedGender,
-                birthday: decryptedBirthday,
-                contact_number: decryptedContactNumber,
-                office: decryptedOffice,
-                selected_role: decryptedSelectedRole,
-                email: decryptedEmail,
-                uploaded_file: adminData.uploaded_file,
-                adminProfilePicture: adminData.adminProfilePicture,
-                official_role: decryptedOfficialRole,
-                postedDate: decryptedPostedDate,
-                accountStatus: decryptedStatus,
-            };
-        });
-
-        res.json({ status: true, allAdminData: decryptAdminInformation });
+        res.json({ status: true, allAdminData: adminDataWithoutDecryption });
     } catch (error) {
         console.log(error, 'err---->');
         next(error);
     }
 };
+
 
 exports.deleteAdmin = async (req, res, next) => {
     try {
@@ -244,21 +189,19 @@ exports.editAdmin = async (req, res, next) => {
             official_role
         } = req.body;
 
-        // Encrypt the updated data
         const updatedData = {
-            fullname: encryptData(fullname),
-            gender: encryptData(gender),
-            birthday: encryptData(birthday),
-            contact_number: encryptData(contact_number),
-            office: encryptData(office),
-            email: encryptData(email),
+            fullname: fullname,
+            gender: gender,
+            birthday: birthday,
+            contact_number: contact_number,
+            office: office,
+            email: email,
             adminProfilePicture: adminProfilePicture,
-            official_role: encryptData(official_role),
+            official_role: official_role,
         };
 
         console.log('updatedData:', updatedData);
 
-        // Update the admin account in the database
         await adminRegistrationService.updateAdmin(_id, updatedData);
 
         res.json({ status: true, success: "Admin account updated successfully" });
@@ -267,6 +210,7 @@ exports.editAdmin = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 exports.editAdminRole = async (req, res, next) => {
@@ -280,8 +224,8 @@ exports.editAdminRole = async (req, res, next) => {
 
         // Encrypt the updated data
         const updatedData = {
-            official_role: encryptData(official_role),
-            accountStatus: encryptData(accountStatus),
+            official_role: official_role,
+            accountStatus: accountStatus,
 
         };
 
@@ -360,7 +304,7 @@ exports.resetPassword = async (req, res, next) => {
         }
 
         // Find the user in the database by their email
-        const user = await adminRegistrationService.checkUser(encryptData(email));
+        const user = await adminRegistrationService.checkUser(email);
 
         if (!user) {
             return res.status(404).json({ error: "USER_NOT_FOUND", message: 'User does not exist' });

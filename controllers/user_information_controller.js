@@ -6,31 +6,12 @@ exports.register = async (req, res, next) => {
     try {
         const { name, birthday, gender, contact_number, street_name, house_number, floor, building_name, barangay, district, city, uploaded_file, email, password, profilePicture, postedDate, accountStatus } = req.body;
 
-        // Encrypt the sensitive data
-        const encryptedName = encryptData(name);
-        const encryptedBirthday = encryptData(birthday);
-        const encryptedGender = encryptData(gender);
-        const encryptedContactNumber = encryptData(contact_number);
-        const encryptedBarangay = encryptData(barangay);
-        const encryptedEmail = encryptData(email);
-        const encryptedStreetName = encryptData(street_name);
-        const encryptedHouseNumber = encryptData(house_number);
-        const encryptedFloor = encryptData(floor);
-        const encryptedBuildingName = encryptData(building_name);
-        const encryptedDistrict = encryptData(district);
-        const encryptedCity = encryptData(city);
-        //const encryptedPicture = encryptData(profilePicture);
-        const encryptedStatus = encryptData(accountStatus);
-        // Encrypt each element of the uploaded_file array
-       //const encryptedUploadedFiles = uploaded_file.map(file => encryptData(file));
-
         const dateReported = postedDate ? new Date(postedDate) : new Date();
 
 
         try {
             const successRes = await UserInformationService.registerUser(
 
-                /** 
                 name,
                 birthday,
                 gender,
@@ -42,28 +23,12 @@ exports.register = async (req, res, next) => {
                 barangay,
                 district,
                 city,
+                uploaded_file,
                 email,
                 password,
-                profilePicture
-                */
-
-                encryptedName,
-                encryptedBirthday,
-                encryptedGender, 
-                encryptedContactNumber,
-                encryptedStreetName,
-                encryptedHouseNumber,
-                encryptedFloor,
-                encryptedBuildingName,
-                encryptedBarangay,
-                encryptedDistrict,
-                encryptedCity,
-                uploaded_file,
-                encryptedEmail,
-                password, 
                 profilePicture,
                 dateReported,
-                encryptedStatus
+                accountStatus
                 
             );
             res.json({ status: true, success: "User Registered Successfully" });
@@ -91,8 +56,7 @@ exports.login = async (req, res, next) => {
             throw new Error('Parameter are not correct');
         }
 
-         // Find a user in the database by their encrypted email
-        const user = await UserInformationService.checkUser(encryptData(email)); 
+        const user = await UserInformationService.checkUser(email); 
 
         //if user does not exist //cannot find the requested data
         if (!user) {
@@ -146,45 +110,28 @@ exports.getUserData = async (req, res, next) => {
             return;
         }
 
-        // Decrypt the sensitive data for each report
-        const decryptedUserInformation = userInformationData.map(userData => {
-            const decryptedName = decryptData(userData.name);
-            const decryptedBirthday = decryptData(userData.birthday);
-            const decryptedGender = decryptData(userData.gender);
-            const decryptedContactNumber = decryptData(userData.contact_number);
-            const decryptedStreetName = decryptData(userData.street_name);
-            const decryptedHouseNumber = decryptData(userData.house_number);
-            const decryptedFloor = decryptData(userData.floor);
-            const decryptedBuildingName = decryptData(userData.building_name);
-            const decryptedBarangay = decryptData(userData.barangay);
-            const decryptedDistrict = decryptData(userData.district);
-            const decryptedCity = decryptData(userData.city);
-            const decryptedEmail = decryptData(userData.email);
-            const decryptedStatus = decryptData(userData.accountStatus);
+        const userDataWithoutDecryption = userInformationData.map(userData => ({
+            _id: userData._id,
+            name: userData.name,
+            birthday: userData.birthday,
+            gender: userData.gender,
+            contact_number: userData.contact_number,
+            street_name: userData.street_name,
+            house_number: userData.house_number,
+            floor: userData.floor,
+            building_name: userData.building_name,
+            barangay: userData.barangay,
+            district: userData.district,
+            city: userData.city,
+            uploaded_file: userData.uploaded_file,
+            email: userData.email,
+            profilePicture: userData.profilePicture,
+            postedDate: userData.postedDate,
+            accountStatus: userData.accountStatus,
+            password: userData.password
+        }));
 
-            return {
-                _id: userData._id,
-                name: decryptedName,
-                birthday: decryptedBirthday,
-                gender: decryptedGender,
-                contact_number: decryptedContactNumber,
-                street_name: decryptedStreetName,
-                house_number: decryptedHouseNumber,
-                floor: decryptedFloor,
-                building_name: decryptedBuildingName,
-                barangay: decryptedBarangay,
-                district: decryptedDistrict,
-                city: decryptedCity,
-                uploaded_file: userData.uploaded_file,
-                email: decryptedEmail,
-                profilePicture: userData.profilePicture,
-                postedDate: userData.postedDate,
-                accountStatus: decryptedStatus,
-                password: userData.password
-            };
-        });
-
-        res.json({ status: true, userInformationData: decryptedUserInformation });
+        res.json({ status: true, userInformationData: userDataWithoutDecryption });
     } catch (error) {
         console.log(error, 'err---->');
         next(error);
@@ -192,56 +139,39 @@ exports.getUserData = async (req, res, next) => {
 };
 
 
-// get all user data
+
 // get all user data
 exports.getAllUserData = async (req, res, next) => {
     try {
         const allUserData = await UserInformationService.getAllUserData();
 
-        // Decrypt the sensitive data for each user
-        const decryptedUserData = allUserData.map(userData => {
-            const decryptedName = decryptData(userData.name);
-            const decryptedBirthday = decryptData(userData.birthday);
-            const decryptedGender = decryptData(userData.gender);
-            const decryptedContactNumber = decryptData(userData.contact_number);
-            const decryptedStreetName = decryptData(userData.street_name);
-            const decryptedHouseNumber = decryptData(userData.house_number);
-            const decryptedFloor = decryptData(userData.floor);
-            const decryptedBuildingName = decryptData(userData.building_name);
-            const decryptedBarangay = decryptData(userData.barangay);
-            const decryptedDistrict = decryptData(userData.district);
-            const decryptedCity = decryptData(userData.city);
-            const decryptedEmail = decryptData(userData.email);
-            const decryptedStatus = decryptData(userData.accountStatus);
-            
+        const userDataWithoutDecryption = allUserData.map(userData => ({
+            _id: userData._id,
+            name: userData.name,
+            birthday: userData.birthday,
+            gender: userData.gender,
+            contact_number: userData.contact_number,
+            street_name: userData.street_name,
+            house_number: userData.house_number,
+            floor: userData.floor,
+            building_name: userData.building_name,
+            barangay: userData.barangay,
+            district: userData.district,
+            city: userData.city,
+            uploaded_file: userData.uploaded_file,
+            email: userData.email,
+            profilePicture: userData.profilePicture,
+            postedDate: userData.postedDate,
+            accountStatus: userData.accountStatus,
+        }));
 
-            return {
-                _id: userData._id,
-                name: decryptedName,
-                birthday: decryptedBirthday,
-                gender: decryptedGender,
-                contact_number: decryptedContactNumber,
-                street_name: decryptedStreetName,
-                house_number: decryptedHouseNumber,
-                floor: decryptedFloor,
-                building_name: decryptedBuildingName,
-                barangay: decryptedBarangay,
-                district: decryptedDistrict,
-                city: decryptedCity,
-                uploaded_file: userData.uploaded_file, 
-                email: decryptedEmail,
-                profilePicture: userData.profilePicture,
-                postedDate: userData.postedDate,
-                accountStatus: decryptedStatus,
-            };
-        });
-
-        res.json({ status: true, allUserData: decryptedUserData });
+        res.json({ status: true, allUserData: userDataWithoutDecryption });
     } catch (error) {
         console.log(error, 'err---->');
         next(error);
     }
 };
+
 
 
 
@@ -271,12 +201,10 @@ exports.editUserStatus = async (req, res, next) => {
             accountStatus,
         } = req.body;
 
-        // Encrypt the updated data
         const updatedData = {
-            accountStatus: encryptData(accountStatus),
+            accountStatus: accountStatus,
         };
 
-        // Update the user account in the database
         await UserInformationService.updateUserStatus(_id, updatedData);
 
         res.json({ status: true, success: "User account updated successfully" });
@@ -285,6 +213,7 @@ exports.editUserStatus = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 exports.editUser = async (req, res, next) => {
@@ -306,24 +235,22 @@ exports.editUser = async (req, res, next) => {
             profilePicture,
         } = req.body;
 
-        // Encrypt the updated data
         const updatedData = {
-            name: encryptData(name),
-            birthday: encryptData(birthday),
-            gender: encryptData(gender),
-            contact_number: encryptData(contact_number),
-            street_name: encryptData(street_name),
-            house_number: encryptData(house_number),
-            floor: encryptData(floor),
-            building_name: encryptData(building_name),
-            barangay: encryptData(barangay),
-            district: encryptData(district),
-            city: encryptData(city),
-            email: encryptData(email),
-            profilePicture: profilePicture,
+            name,
+            birthday,
+            gender,
+            contact_number,
+            street_name,
+            house_number,
+            floor,
+            building_name,
+            barangay,
+            district,
+            city,
+            email,
+            profilePicture,
         };
 
-        // Update the user account in the database
         await UserInformationService.updateUser(_id, updatedData);
 
         res.json({ status: true, success: "User account updated successfully" });
@@ -332,6 +259,7 @@ exports.editUser = async (req, res, next) => {
         next(error);
     }
 };
+
 
 // Get total number of user_information records
 exports.getTotalUserInformationCount = async (req, res, next) => {
@@ -350,7 +278,7 @@ exports.countUsersByBarangay = async (req, res, next) => {
         const { barangay } = req.body; 
 
         // Call the new function to count users by barangay
-        const count = await UserInformationService.countUsersByBarangay(encryptData(barangay));
+        const count = await UserInformationService.countUsersByBarangay(barangay);
 
         res.json({ status: true, count });
     } catch (error) {
@@ -380,7 +308,6 @@ exports.changePassword = async (req, res, next) => {
             return res.status(401).json({ error: "INVALID_PASSWORD", message: 'Old password is incorrect' });
         }
 
-        // Validate the new password (you can reuse your existing validation logic)
         if (!newPassword.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[.!@#$%^&*_-])[A-Za-z\d.!@#$%^&*_-]{10,}$/)) {
             return res.status(400).json({
                 error: "INVALID_PASSWORD_FORMAT",
@@ -410,7 +337,7 @@ exports.resetPassword = async (req, res, next) => {
         }
 
         // Find the user in the database by their email
-        const user = await UserInformationService.checkUser(encryptData(email));
+        const user = await UserInformationService.checkUser(email);
 
         if (!user) {
             return res.status(404).json({ error: "USER_NOT_FOUND", message: 'User does not exist' });

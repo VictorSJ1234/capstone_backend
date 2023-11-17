@@ -5,13 +5,7 @@ const BarangayResponseModel = require('../models/barangay_reponse_model');
 // Create admin report
 exports.createBarangayReport = async (req, res, next) => {
     try {
-        const {reportId, userId, sender, report_status, action_to_do, response_description, date_responded, uploaded_file } = req.body;
-
-        // Encrypt sensitive data
-        //const encryptedReportStatus = encryptData(report_status);
-        //const encryptedActionToDo = encryptData(action_to_do);
-        const encryptedResponseDescription = encryptData(response_description);
-        const encryptedUploadedFiles = uploaded_file.map(file => encryptData(file));
+        const { reportId, userId, sender, report_status, action_to_do, response_description, date_responded, uploaded_file } = req.body;
 
         const dateResponded = date_responded ? new Date(date_responded) : new Date();
 
@@ -29,7 +23,6 @@ exports.createBarangayReport = async (req, res, next) => {
 
         const defaultRecipient = "Pasig Dengue Task Force";
 
-        // Data to be transferred to the database
         const adminReportData = await BarangayResponseServices.createBarangayReport(
             formattedResponseId,
             reportId,
@@ -38,7 +31,7 @@ exports.createBarangayReport = async (req, res, next) => {
             defaultRecipient,
             report_status,
             action_to_do,
-            encryptedResponseDescription,
+            response_description,
             dateResponded,
             uploaded_file
         );
@@ -49,6 +42,7 @@ exports.createBarangayReport = async (req, res, next) => {
         next(error);
     }
 };
+
 
 // get admin response by reportId
 exports.getBarangayResponse = async (req, res, next) => {
@@ -72,7 +66,7 @@ exports.getBarangayResponse = async (req, res, next) => {
             recipient: response.recipient,
             report_status: response.report_status,
             action_to_do: response.action_to_do,
-            response_description: decryptData(response.response_description),
+            response_description: response.response_description,
             date_responded: response.date_responded,
             uploaded_file: response.uploaded_file
         }));

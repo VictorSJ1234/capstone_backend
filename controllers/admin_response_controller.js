@@ -5,12 +5,7 @@ const AdminResponseModel = require('../models/admin_response_model');
 // Create admin report
 exports.createAdminReport = async (req, res, next) => {
     try {
-        const {reportId, userId, report_status, action_to_do, response_description, date_responded, uploaded_file } = req.body;
-
-        // Encrypt sensitive data
-        const encryptedReportStatus = encryptData(report_status);
-        const encryptedActionToDo = encryptData(action_to_do);
-        const encryptedResponseDescription = encryptData(response_description);
+        const { reportId, userId, report_status, action_to_do, response_description, date_responded, uploaded_file } = req.body;
 
         const dateResponded = date_responded ? new Date(date_responded) : new Date();
 
@@ -26,14 +21,13 @@ exports.createAdminReport = async (req, res, next) => {
         // Format the responseId to have leading zeros
         const formattedResponseId = responseId.toString().padStart(15, '0');
 
-        // Data to be transferred to the database
         const adminReportData = await AdminResponseServices.createAdminReport(
             formattedResponseId,
             reportId,
             userId,
-            encryptedReportStatus,
-            encryptedActionToDo,
-            encryptedResponseDescription,
+            report_status,
+            action_to_do,
+            response_description,
             dateResponded,
             uploaded_file 
         );
@@ -44,6 +38,7 @@ exports.createAdminReport = async (req, res, next) => {
         next(error);
     }
 };
+
 
 // get admin response by reportId
 exports.getAdminResponse = async (req, res, next) => {
@@ -64,9 +59,9 @@ exports.getAdminResponse = async (req, res, next) => {
             responseId: response.responseId,
             reportId: response.reportId,
             userId: response.userId,
-            report_status: decryptData(response.report_status),
-            action_to_do: decryptData(response.action_to_do),
-            response_description: decryptData(response.response_description),
+            report_status: response.report_status,
+            action_to_do: response.action_to_do,
+            response_description: response.response_description,
             date_responded: response.date_responded,
             uploaded_file: response.uploaded_file
         }));

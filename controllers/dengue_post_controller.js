@@ -162,9 +162,9 @@ exports.getLatestDenguePost = async (req, res, next) => {
     try {
         const latestDenguePost = await DenguePostService.getLatestDenguePost();
 
-        if (!latestDenguePost) {
-            // No dengue post found
-            return res.status(404).json({ error: "DENGUE_POST_NOT_FOUND", message: 'Dengue post not found' });
+        if (latestDenguePost.length === 0) {
+            res.json({ status: true, latestDenguePost: [] });
+            return;
         }
 
         // Decrypt the sensitive data for the latest post

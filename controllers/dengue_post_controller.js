@@ -162,11 +162,6 @@ exports.getLatestDenguePost = async (req, res, next) => {
     try {
         const latestDenguePost = await DenguePostService.getLatestDenguePost();
 
-        if (latestDenguePost.length === 0) {
-            res.json({ status: true, latestDenguePost: [] });
-            return;
-        }
-
         // Decrypt the sensitive data for the latest post
         const decryptedLatestDenguePost = {
             _id: latestDenguePost._id,

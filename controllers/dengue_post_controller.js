@@ -162,6 +162,11 @@ exports.getLatestDenguePost = async (req, res, next) => {
     try {
         const latestDenguePost = await DenguePostService.getLatestDenguePost();
 
+        if (!latestDenguePost) {
+            // No dengue post found
+            res.json({ status: true, latestDenguePost: null });
+        }
+
         // Decrypt the sensitive data for the latest post
         const decryptedLatestDenguePost = {
             _id: latestDenguePost._id,

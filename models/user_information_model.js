@@ -26,7 +26,6 @@ const userSchema = new Schema({
     },
     house_number: {
         type: String,
-        required: [true, "This field is required"],
     },
     floor: {
         type: String,

@@ -8,7 +8,7 @@ const db = require('./config/db');
 
 const port = process.env.PORT || 5000;
 
-app.get('/robots.txt', (req, res) => {
+app.get('./robots.txt', (req, res) => {
     const filePath = path.join(__dirname, 'robots.txt');
     const stream = fs.createReadStream(filePath);
     stream.pipe(res);

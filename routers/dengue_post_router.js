@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const DenguePostController = require('../controllers/dengue_post_controller');
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
+
 
 router.post("/createDenguePost", DenguePostController.createDenguePost);
 router.post("/getDenguePost", DenguePostController.getDenguePost);

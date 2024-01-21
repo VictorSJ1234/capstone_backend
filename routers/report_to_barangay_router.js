@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const ReportToBarangayController = require('../controllers/report_to_barangay_controller');
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
+
 
 router.post("/createReportToBarangay", ReportToBarangayController.createReportToBarangay);
 router.post("/getReportToBarangay", ReportToBarangayController.getReportToBarangay);

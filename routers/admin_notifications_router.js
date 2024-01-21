@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const AdminNotificationController = require('../controllers/admin_notifications_controller');
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
+
 
 router.post("/createAdminNotificationStatus", AdminNotificationController.createAdminNotification);
 router.post("/getAdminNotificationStatus", AdminNotificationController.getNotificationsByUserAndStatusAndRecipient); 

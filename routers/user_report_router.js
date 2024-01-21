@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const UserReportController = require('../controllers/user_report_controller');
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
+
 
 router.post("/createUserReport",UserReportController.createUserReport);
 router.post('/getUserReport', UserReportController.getUserReport);

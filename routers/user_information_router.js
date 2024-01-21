@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const UserController = require("../controllers/user_information_controller");
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
 
 router.post('/registration', UserController.register);
 router.post('/login', UserController.login);

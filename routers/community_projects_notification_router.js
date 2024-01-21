@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const CommunityProjectNotificationController = require('../controllers/community_project_notification_controller');
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
+
 
 router.post("/createNotificationStatus", CommunityProjectNotificationController.createCommunityProjectNotification);
 router.post("/getNotificationStatus", CommunityProjectNotificationController.getNotificationsByUserAndStatus); 

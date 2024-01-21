@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const InquiryController = require('../controllers/inquiry_controller');
+const apiKeyMiddleware = require('../middleware/apiKeyMiddleware'); 
+
+router.use(apiKeyMiddleware);
+
 
 router.post("/createInquiry", InquiryController.createInquiry);
 router.post("/getInquiry", InquiryController.getInquiry);

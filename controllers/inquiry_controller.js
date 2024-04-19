@@ -114,8 +114,8 @@ exports.InquiryResponse = async (req, res, next) => {
             service: 'Gmail', 
             secure: true,
             auth: {
-                user: 'renesanjuan3302@gmail.com',
-                pass: 'foki fcrt tcfo zjdh ',
+                user: 'inno.geeks.capstone@gmail.com',
+                pass: 'mqew nmkl fzai ffcr ',
             },
             tls: {
                 rejectUnauthorized: false, // Add this line
@@ -124,7 +124,7 @@ exports.InquiryResponse = async (req, res, next) => {
 
         // Email content
         const mailOptions = {
-            from: 'renesanjuan3302@gmail.com',
+            from: 'inno.geeks.capstone@gmail.com',
             to: email, 
             subject: response_subject,
             text: inquiry_response, //
